@@ -1,0 +1,25 @@
+{
+  "name": "porto.backend",
+  "version": "1.0.0",
+  "description": "migration-tool",
+  "homepage": "https://github.com/hemn7/porto#readme",
+  "bugs": {
+    "url": "https://github.com/hemn7/porto/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hemn7/porto.git"
+  },
+  "license": "MIT",
+  "author": "heman",
+  "type": "module",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  }
+}
