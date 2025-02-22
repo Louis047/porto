@@ -61,25 +61,41 @@ app.post("/decrypt", (req, res) => {
     }
 });
 
-app.post("/api/receive", async (req, res) => {
-    console.log("Received browser data:", req.body); 
+// app.post("/api/receive", async (req, res) => {
+//     console.log("Received browser data:", req.body); 
 
-    if (!req.body || Object.keys(req.body).length === 0) {
-        return res.status(400).json({ error: "Invalid or empty data" });
-    }
+//     if (!req.body || Object.keys(req.body).length === 0) {
+//         return res.status(400).json({ error: "Invalid or empty data" });
+//     }
 
+//     try {
+//         const encryptedData = encryptData(JSON.stringify(req.body)); 
+//         console.log("Encrypted Data:", encryptedData); 
+
+//         // const qrCode = await qrcode.toDataURL(encryptedData); 
+
+//         res.json({ message: "Data received successfully"});
+//     } catch (error) {
+//         console.error("QR Code Generation Error:", error);
+//         res.status(500).json({ error: "QR Code generation failed" });
+//     }
+// });
+
+app.post("/receiveData", async (req, res) => {
     try {
-        const encryptedData = encryptData(JSON.stringify(req.body)); 
-        console.log("Encrypted Data:", encryptedData); 
+        const { history, bookmarks, cookies } = req.body;
 
-        // const qrCode = await qrcode.toDataURL(encryptedData); 
+        console.log("Received browser data:", { history, bookmarks, cookies });
 
-        res.json({ message: "Data received successfully"});
+        // Respond with a valid JSON format
+        res.json({ success: true, message: "Data received successfully" });
+
     } catch (error) {
-        console.error("QR Code Generation Error:", error);
-        res.status(500).json({ error: "QR Code generation failed" });
+        console.error("Error processing request:", error);
+        res.status(500).json({ success: false, message: "Internal Server Error" });
     }
 });
+
 
 
 
