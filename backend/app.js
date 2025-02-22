@@ -3,6 +3,7 @@ dotenv.config()
 import e from "express"
 import cors from "cors"
 import crypto from "crypto"
+import qrcode from "qrcode"
 
 const app = e();
 const PORT = process.env.PORT || 8080;
@@ -59,6 +60,28 @@ app.post("/decrypt", (req, res) => {
         res.status(500).json({ error: "Decryption failed" });
     }
 });
+
+app.post("/api/receive", async (req, res) => {
+    console.log("Received browser data:", req.body); 
+
+    if (!req.body || Object.keys(req.body).length === 0) {
+        return res.status(400).json({ error: "Invalid or empty data" });
+    }
+
+    try {
+        const encryptedData = encryptData(JSON.stringify(req.body)); 
+        console.log("Encrypted Data:", encryptedData); 
+
+        // const qrCode = await qrcode.toDataURL(encryptedData); 
+
+        res.json({ message: "Data received successfully"});
+    } catch (error) {
+        console.error("QR Code Generation Error:", error);
+        res.status(500).json({ error: "QR Code generation failed" });
+    }
+});
+
+
 
 // Start Server
 app.listen(PORT, () => {
