@@ -1,38 +1,42 @@
-# Porto - Secure Browser Data Migration
+# Porto - Secure, Peer-to-Peer Browser Data Transfer
 
-Porto is a **web-based tool** that enables users to **securely transfer browser data** (history, bookmarks, passwords, cookies, extensions) using **QR codes with end-to-end encryption**.
+Porto is a **privacy-first browser data migration tool** that allows users to securely transfer their browsing history, bookmarks, and cookies from a PC to a mobile device **without relying on cloud services** or Google/Microsoft accounts.
 
-## 🚀 Features
-- **End-to-End Encryption (AES-256)** for secure data transfer.
-- **QR Code-Based Sharing** with no cloud dependency.
-- **One-Time Use & Expiry** for enhanced security.
-- **WebRTC** Peer-to-Peer Transfer.
+## 🔍 Why Porto?
 
-## 🛠 How It Works
-1. **Sender** selects browser data to migrate.
-2. **Porto encrypts** the data and generates a **QR code**.
-3. **Receiver scans** the QR using Porto on another browser.
-4. **Decryption & Import:** The receiver enters a **PIN** or performs **secure key exchange** to decrypt the data.
-5. **Success!** The data is securely transferred and applied.
+### ✅ 1. Privacy-Oriented Users Avoid Google/Big Tech Tracking
+- Unlike Chrome Sync, Porto **does not require a Google or Microsoft account**.
+- No data is stored on external servers—**everything is encrypted and transferred locally**.
+- Designed for privacy-conscious users who **do not want their browsing data stored in the cloud**.
 
-## 📦 Tech Stack
-- **Frontend:** Svelte
-- **Encryption:** AES-256, WebCrypto API
-- **Data Transfer:** WebRTC 
-- **Storage:** IndexedDB (temporary data handling)
+## 🚀 How Porto Works
+1. **User initiates the process in the Web App** by clicking "Create QR".
+2. **The web app prompts the user to install the Porto browser extension**, which acts as a bridge between the browser and server.
+3. **The browser extension fetches browsing data** (history, bookmarks, cookies) and sends it to the server.
+4. **The server encrypts the data using AES-256 encryption**.
+5. **A QR code is generated on the server** containing the encrypted data.
+6. **The web app displays the QR code** for scanning.
+7. **Another client scans the QR code**, retrieves the key, and gains access.
+8. **The mobile device decrypts the information and applies the data to the browser automatically**.
+9. **Peer-to-peer (P2P) connections** are established for direct data transfers between devices.
 
-## ⚡ Quick Start
-```bash
-# Clone the repository
-git clone https://github.com/hemn7/porto.git
+## 🔐 Security & Encryption
+- **AES-256 encryption** is used to protect browser data before transmission.
+- **QR codes expire after a short duration**, ensuring one-time use.
+- **Peer-to-peer (P2P) communication** is leveraged to enable direct, encrypted transfers between clients.
 
-# Install dependencies
-npm install
+## 📌 Getting Started
+1. **Open the Porto Web App** and click "Create QR".
+2. **Follow the prompt to install the Porto browser extension**.
+3. **Scan the QR code on your mobile device**.
+4. **Access and apply your browsing data securely**.
 
-# Start the development server
-npm run dev
-```
+## 📅 Roadmap
+- 🔄 **Mobile-to-PC Transfer** (Reverse migration support)
+- 🔗 **WebRTC & P2P Support** for direct peer-to-peer transfers
+- 🔄 **Firefox Support** (Currently in development)
+- 🛡 **Multi-layered Encryption** for additional security
 
-## 📜 License
-MIT 
+---
+Note: Porto is built for those who **value their privacy** and want **complete control over their browsing data**. No accounts. No cloud. Just secure, peer-to-peer transfers. 
 
