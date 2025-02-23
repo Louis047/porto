@@ -34,7 +34,6 @@ function encryptData(data) {
     return { encrypted, iv: iv.toString("hex"), authTag };
 }
 
-// 🔹 API Route: Receive Data and Generate QR
 app.post("/receiveData", async (req, res) => {
     try {
         console.log("📥 Received data from extension:", req.body);
@@ -49,11 +48,16 @@ app.post("/receiveData", async (req, res) => {
         // Store in Redis with 5-minute expiry
         const redisResult = await redisClient.set(dataHash, JSON.stringify(encryptedData), { EX: 300 });
 
-        console.log("✅ Redis SET Result:", redisResult);
-        console.log("🔹 Stored Data Hash:", dataHash);
+        if (!redisResult) {
+            console.error("❌ Redis storage failed");
+            return res.status(500).json({ error: "Redis storage failed" });
+        }
+
+        console.log("✅ Stored Data Hash:", dataHash);
 
         // Generate QR Code
         const qrCode = await qrcode.toDataURL(dataHash);
+        console.log("✅ QR Code Generated:", qrCode);
 
         res.json({ message: "Data stored and QR generated", qrCode, hash: dataHash });
 
@@ -62,6 +66,50 @@ app.post("/receiveData", async (req, res) => {
         res.status(500).json({ error: "Data processing failed" });
     }
 });
+
+// 🔹 Decrypt Data Function
+function decryptData(encryptedData) {
+    try {
+        const { encrypted, iv, authTag } = encryptedData;
+        const decipher = crypto.createDecipheriv(ALGORITHM, KEY, Buffer.from(iv, "hex"));
+        decipher.setAuthTag(Buffer.from(authTag, "hex"));
+        
+        let decrypted = decipher.update(encrypted, "hex", "utf8");
+        decrypted += decipher.final("utf8");
+        return JSON.parse(decrypted);
+    } catch (error) {
+        console.error("❌ Decryption Failed:", error);
+        return null;
+    }
+}
+
+// 🔹 API Route: Retrieve and Decrypt Data
+app.get("/retrieveData/:hash", async (req, res) => {
+    try {
+        const { hash } = req.params;
+        console.log("🔍 Lookup Data for Hash:", hash);
+
+        const encryptedData = await redisClient.get(hash);
+        if (!encryptedData) {
+            return res.status(404).json({ error: "Data not found or expired" });
+        }
+
+        // Parse and Decrypt
+        const decryptedData = decryptData(JSON.parse(encryptedData));
+        if (!decryptedData) {
+            return res.status(500).json({ error: "Decryption failed" });
+        }
+
+        console.log("✅ Successfully Retrieved and Decrypted Data:", decryptedData);
+        res.json({ data: decryptedData });
+
+    } catch (error) {
+        console.error("❌ Error retrieving data:", error);
+        res.status(500).json({ error: "Server error" });
+    }
+});
+
+
 
 // Start Server
 app.listen(PORT, () => {

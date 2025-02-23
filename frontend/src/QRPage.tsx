@@ -5,14 +5,25 @@ const QRPage: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
-        fetch("http://localhost:8080/generateQR")
+        fetch("http://localhost:8080/receiveData", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ history: ["example.com", "test.com"] }) // Dummy data
+        })
             .then(res => res.json())
             .then(data => {
-                setQrImage(data.qrImage);
+                console.log("📜 QR API Response:", data); // Debugging log
+
+                if (data.qrCode) {
+                    setQrImage(data.qrCode);
+                } else {
+                    console.error("❌ Error: 'qrCode' not found in response");
+                }
+
                 setLoading(false);
             })
             .catch(err => {
-                console.error("Error fetching QR:", err);
+                console.error("❌ Error fetching QR:", err);
                 setLoading(false);
             });
     }, []);
