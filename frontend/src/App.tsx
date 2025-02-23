@@ -5,7 +5,6 @@ import './App.css'
 import { BrowserData } from "./types/browserData";
 import { getBrowserData } from "./utils/browserData";
 import { sendBrowserDataToBackend } from "./api";
-
 const App: React.FC = () => {
   const [encryptedData, setEncryptedData] = useState<string | null>(null);
   const [qrCode, setQrCode] = useState("");

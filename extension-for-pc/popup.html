@@ -1,11 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Browser Export</title>
-    <script src="popup.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Porto Migration</title>
+    <style>
+        body { width: 200px; font-family: Arial, sans-serif; text-align: center; padding: 10px; }
+        button { background: #007bff; color: white; border: none; padding: 10px; cursor: pointer; width: 100%; }
+        button:hover { background: #0056b3; }
+        #status { margin-top: 10px; font-size: 12px; color: green; }
+    </style>
 </head>
 <body>
-    <button id="fetchData">Fetch Data</button>
+    <h3>Porto Migration</h3>
+    <button id="sendData">Send Data</button>
     <p id="status"></p>
+    <script src="popup.js"></script>
 </body>
 </html>
