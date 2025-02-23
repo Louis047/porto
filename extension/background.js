@@ -48,4 +48,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         sendDataToBackend();
         sendResponse({ status: "Data sending initiated" });
     }
+    if (request.action === "PING") {
+        sendResponse({ response: "EXTENSION_ACTIVE" });
+      }
 });
